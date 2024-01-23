@@ -15,8 +15,12 @@ def read_file(file_name):
     Denne funksjonen får et filnavn som argument og skal gi
     tilbake en liste av tekststrenger som representerer linjene i filen.
     """
+    data = open(file_name, 'r',encoding='utf-8')
+
+    tekstListe = data.readlines()
+
     # Tips: kanksje "open"-funksjonen kunne være nyttig her: https://docs.python.org/3/library/functions.html#open
-    return NotImplemented  # TODO: Du må erstatte denne linjen
+    return tekstListe 
 
 
 def lines_to_words(lines):
@@ -31,10 +35,21 @@ def lines_to_words(lines):
 
     F. eks: Inn: ["Det er", "bare", "noen få ord"], Ut: ["Det", "er", "bare", "noen", "få", "ord"]
     """
+    words=[]
+
+
+    for sentences in lines:
+        for word in sentences.split():
+            word2 = word.strip(". : ; , ? !")
+            word_fixed = word2.lower()
+            if word_fixed:
+                words.append(word_fixed)
+
+
     # Tips: se på "split()"-funksjonen https://docs.python.org/3/library/stdtypes.html#str.split
     # i tillegg kan "strip()": https://docs.python.org/3/library/stdtypes.html#str.strip
     # og "lower()": https://docs.python.org/3/library/stdtypes.html#str.lower være nyttig
-    return NotImplemented  # TODO: Du må erstatte denne linjen
+    return words  # TODO: Du må erstatte denne linjen
 
 
 def compute_frequency(words):
@@ -44,8 +59,15 @@ def compute_frequency(words):
     blir realisert gjennom Python dictionaires: https://docs.python.org/3/library/stdtypes.html#mapping-types-dict
 
     F. eks. Inn ["hun", "hen", "han", "hen"], Ut: {"hen": 2, "hun": 1, "han": 1}
+    
     """
-    return NotImplemented  # TODO: Du må erstatte denne linjen
+    frequency_table = {}
+
+    for word in words:
+        # Increment the count for each word in the dictionary
+        frequency_table[word] = frequency_table.get(word, 0) + 1
+
+    return frequency_table  # TODO: Du må erstatte denne linjen
 
 
 FILL_WORDS = ['og', 'dei', 'i', 'eg', 'som', 'det', 'han', 'til', 'skal', 'på', 'for', 'då', 'ikkje', 'var', 'vera']
@@ -59,7 +81,10 @@ def remove_filler_words(frequency_table):
     Målet med denne funksjonen er at den skal få en frekvenstabll som input og så fjerne alle fyll-ord
     som finnes i FILL_WORDS.
     """
-    return NotImplemented  # TODO: Du må erstatte denne linjen
+
+    filtered_frequency_table = {word: count for word, count in frequency_table.items() if word.lower() not in FILL_WORDS}
+    
+    return filtered_frequency_table  # TODO: Du må erstatte denne linjen
 
 
 def largest_pair(par_1, par_2):
@@ -69,9 +94,16 @@ def largest_pair(par_1, par_2):
     Denne funksjonen skal sammenligne heltalls-komponenten i begge par og så gi tilbake det paret der
     tallet er størst.
     """
+
+    if par_1[1]> par_2[1]:
+        return par_1
+    elif par_2[1] > par_1[1]:
+        return par_2
+    else: #Om de er like
+        return par_1,par_2
+    
     # OBS: Tenk også på situasjonen når to tall er lik! Vurder hvordan du vil handtere denne situasjonen
     # kanskje du vil skrive noen flere test metoder ?!
-    return NotImplemented  # TODO: Du må erstatte denne linjen
 
 
 def find_most_frequent(frequency_table):
@@ -81,7 +113,17 @@ def find_most_frequent(frequency_table):
     """
     # Tips: se på "dict.items()" funksjonen (https://docs.python.org/3/library/stdtypes.html#dict.items)
     # og kanskje du kan gjenbruke den "largest_pair" metoden som du nettopp har laget
-    return NotImplemented  # TODO: Du må erstatte denne linjen
+
+    maxFrequency = 0
+    maxFrequencyWord = None
+
+    for word,frequency in frequency_table.items():
+        if frequency > maxFrequency:
+            maxFrequency = frequency
+            maxFrequencyWord = word
+
+
+    return maxFrequencyWord  # TODO: Du må erstatte denne linjen
 
 
 ############################################################
